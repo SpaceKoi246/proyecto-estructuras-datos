@@ -1,7 +1,3 @@
-//
-// Created by ldieg on 11/29/2023.
-//
-
 #include "BooksList.h"
 #include "Book.h"
 

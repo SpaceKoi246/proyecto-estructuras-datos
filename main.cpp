@@ -6,9 +6,12 @@ using namespace std;
 #include "User/UsersList.h"
 #include "Book/Book.h"
 #include "Book/BooksList.h"
+#include "Loan/Loan.h"
+#include "Loan/LoanTree.h"
 
 UsersList userList;
 BooksList bookList;
+LoanTree loanTree;
 
 void menu();
 
@@ -28,14 +31,28 @@ void findBookByISBN();
 
 void removeBookByISBN();
 
+void viewLoans();
+
+void loanBook();
+
+void returnBook();
+
 int main() {
     userList.addUser(User("Alice", "Smith", "123 Main St", "alice@example.com", "01/01/1990", "Femenino", "001"));
     userList.addUser(User("Bob", "Johnson", "456 Elm St", "bob@example.com", "02/02/1991", "Masculino", "002"));
-    bookList.addBook(Book("El Señor de los Anillos", 1954, "George Allen & Unwin", "J.R.R. Tolkien", "9780544003415", "Fantasía", "Inglés", true));
-    bookList.addBook(Book("Cien Años de Soledad", 1967, "Editorial Sudamericana", "Gabriel García Márquez", "9780307474728", "Realismo mágico", "Español", true));
-    bookList.addBook(Book("1984", 1949, "Secker & Warburg", "George Orwell", "9780451524935", "Distopía", "Inglés", false));
-    bookList.addBook(Book("To Kill a Mockingbird", 1960, "J.B. Lippincott & Co.", "Harper Lee", "9780061120084", "Ficción histórica", "Inglés", true));
-    bookList.addBook(Book("Don Quijote de la Mancha", 1605, "Francisco de Robles", "Miguel de Cervantes", "9788423349647", "Novela", "Español", false));
+    bookList.addBook(
+            Book("El Señor de los Anillos", 1954, "George Allen & Unwin", "J.R.R. Tolkien", "9780544003415", "Fantasía",
+                 "Inglés", true));
+    bookList.addBook(
+            Book("Cien Años de Soledad", 1967, "Editorial Sudamericana", "Gabriel García Márquez", "9780307474728",
+                 "Realismo mágico", "Español", true));
+    bookList.addBook(
+            Book("1984", 1949, "Secker & Warburg", "George Orwell", "9780451524935", "Distopía", "Inglés", true));
+    bookList.addBook(Book("To Kill a Mockingbird", 1960, "J.B. Lippincott & Co.", "Harper Lee", "9780061120084",
+                          "Ficción histórica", "Inglés", true));
+    bookList.addBook(
+            Book("Don Quijote de la Mancha", 1605, "Francisco de Robles", "Miguel de Cervantes", "9788423349647",
+                 "Novela", "Español", true));
     menu();
 }
 
@@ -58,6 +75,9 @@ void showMenu() {
          << "6. Mostrar libros." << endl
          << "7. Buscar libro por ISBN." << endl
          << "8. Eliminar libro por ISBN." << endl
+         << "9. Realizar préstamo de libro." << endl
+         << "10. Devolver libro." << endl
+         << "11 . Mostrar préstamos."
          << "Ingrese la opción: ";
 }
 
@@ -87,6 +107,15 @@ void processOption(int option) {
         case 8:
             removeBookByISBN();
             break;
+        case 9:
+            loanBook();
+            break;
+        case 10:
+            returnBook();
+            break;
+        case 11:
+            viewLoans();
+            break;
         default:
             cout << "Opción inválida." << endl;
             break;
@@ -104,7 +133,7 @@ void addUser() {
     getline(cin, adddress);
     cout << "Por favor ingrese el email del usuario: ";
     getline(cin, email);
-    cout << "Por favor ingrese la fecha de nacimiento del usuario: ";
+    cout << "Por favor ingrese la fecha de nacimiento del usuario (formato DD/MM/AAAA): ";
     getline(cin, birthDate);
     cout << "Por favor ingrese el género del usuario: ";
     getline(cin, gender);
@@ -189,3 +218,51 @@ void removeBookByISBN() {
         cout << "Libro no encontrado." << endl;
     }
 }
+
+void loanBook() {
+    std::string isbn, userId, loanDate, returnDate;
+    std::cout << "Ingrese el ISBN del libro a prestar: ";
+    std::cin >> isbn;
+    std::cout << "Ingrese el ID del usuario: ";
+    std::cin >> userId;
+    std::cout << "Ingrese la fecha de préstamo (formato DD/MM/AAAA): ";
+    std::cin >> loanDate;
+    std::cout << "Ingrese la fecha de devolución (formato DD/MM/AAAA): ";
+    std::cin >> returnDate;
+
+    Book *book = bookList.findBookByISBN(isbn);
+    User *user = userList.findUserById(userId);
+
+    if (book != nullptr && user != nullptr) {
+        if (!book->isLoaned()) {
+            book->setLoaned(true); // Actualiza el estado del libro a prestado
+            Loan loan(*book, *user, loanDate, returnDate);
+            loanTree.addLoan(loan);
+            std::cout << "Préstamo realizado con éxito." << std::endl;
+        } else {
+            std::cout << "El libro ya está prestado." << std::endl;
+        }
+    } else {
+        std::cout << "Libro o usuario no encontrado." << std::endl;
+    }
+}
+
+void returnBook() {
+    string isbn;
+    cout << "Ingrese el ISBN del libro a devolver: ";
+    cin >> isbn;
+
+    Loan loan = loanTree.findLoanByISBN(isbn);
+    if (loan.getBook().getISBN() != "") { // Asumiendo que un ISBN vacío indica que no se encontró el préstamo
+        loanTree.removeLoan(isbn);
+        cout << "Libro devuelto con éxito." << endl;
+    } else {
+        cout << "Préstamo no encontrado." << endl;
+    }
+}
+
+void viewLoans() {
+    std::cout << "Lista de todos los préstamos:" << std::endl;
+    loanTree.displayAllLoans();
+}
+

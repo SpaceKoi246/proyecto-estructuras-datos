@@ -1,7 +1,3 @@
-//
-// Created by ldieg on 11/29/2023.
-//
-
 #ifndef PROYECTOFINAL_USERSLIST_H
 #define PROYECTOFINAL_USERSLIST_H
 
@@ -24,4 +20,4 @@ public:
     bool removeUser(const std::string &userId);
 };
 
-#endif //PROYECTOFINAL_USERSLIST_H
+#endif

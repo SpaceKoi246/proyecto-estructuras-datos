@@ -1,14 +1,10 @@
-//
-// Created by ldieg on 11/29/2023.
-//
-
 #include <iostream>
 #include "Book.h"
 
 Book::Book(const std::string &title, int publicationYear, const std::string &editorial, const std::string &author,
            const std::string &ISBN, const std::string &category, const std::string &language, bool available)
-        : title(title), publicationYear(publicationYear), editorial(editorial), author(author), ISBN(ISBN),
-          category(category), language(language), available(available), next(nullptr), prev(nullptr) {}
+        : title(title), publicationYear(publicationYear), editorial(editorial), author(author),
+          ISBN(ISBN), category(category), language(language), available(available), next(nullptr), prev(nullptr) {}
 
 std::string Book::getTitle() const {
     return title;
@@ -66,12 +62,13 @@ void Book::setCategory(const std::string &newCategory) {
     category = newCategory;
 }
 
-void Book::setLanguage(const std::string &newLanguage) {
-    language = newLanguage;
+void Book::setLoaned(bool loaned) {
+    available = !loaned;
 }
 
-void Book::setAvailable(bool availability) {
-    available = availability;
+// Método para verificar si el libro está prestado
+bool Book::isLoaned() const {
+    return !available;
 }
 
 Book *Book::getNext() const {

@@ -1,7 +1,3 @@
-//
-// Created by ldieg on 11/29/2023.
-//
-
 #ifndef PROYECTOFINAL_USER_H
 #define PROYECTOFINAL_USER_H
 
@@ -24,6 +20,8 @@ private:
 
 public:
     // Constructor
+    User() = default;
+
     User(const std::string& name, const std::string& lastName, const std::string& address, const std::string& email, const std::string& birthDate, const std::string& gender, const std::string& userId);
 
     // Getters
@@ -70,4 +68,4 @@ public:
 };
 
 
-#endif //PROYECTOFINAL_USER_H
+#endif

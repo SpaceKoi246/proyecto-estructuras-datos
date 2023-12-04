@@ -1,7 +1,3 @@
-//
-// Created by ldieg on 11/29/2023.
-//
-
 #ifndef PROYECTOFINAL_BOOKSLIST_H
 #define PROYECTOFINAL_BOOKSLIST_H
 
@@ -26,4 +22,4 @@ public:
 };
 
 
-#endif //PROYECTOFINAL_BOOKSLIST_H
+#endif

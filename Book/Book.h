@@ -1,7 +1,3 @@
-//
-// Created by ldieg on 11/29/2023.
-//
-
 #ifndef PROYECTOFINAL_BOOK_H
 #define PROYECTOFINAL_BOOK_H
 
@@ -10,18 +6,20 @@
 class Book {
 private:
     std::string title;
-    int publicationYear;
+    int publicationYear{};
     std::string editorial;
     std::string author;
     std::string ISBN;
     std::string category;
     std::string language;
-    bool available;
+    bool available{};
 
-    Book *next;
-    Book *prev;
+    Book *next{};
+    Book *prev{};
 
 public:
+    Book() = default;
+
     Book(const std::string &title, int publicationYear, const std::string &editorial, const std::string &author,
          const std::string &ISBN, const std::string &category, const std::string &language, bool available);
 
@@ -55,9 +53,8 @@ public:
 
     void setCategory(const std::string &category);
 
-    void setLanguage(const std::string &language);
-
-    void setAvailable(bool availability);
+    void setLoaned(bool loaned);  // Nuevo método para cambiar el estado de préstamo
+    bool isLoaned() const;        // Nuevo método para verificar si el libro está prestado
 
     // Implementación de lista doble enlazada
 
@@ -73,4 +70,4 @@ public:
     void displayBookInfo() const;
 };
 
-#endif //PROYECTOFINAL_BOOK_H
+#endif

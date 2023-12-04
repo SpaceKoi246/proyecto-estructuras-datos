@@ -12,4 +12,8 @@ add_executable(ProyectoFinal main.cpp
         Book/Book.h
         Book/BooksList.cpp
         Book/BooksList.h
+        Loan/Loan.cpp
+        Loan/Loan.h
+        Loan/LoanTree.cpp
+        Loan/LoanTree.h
 )
