@@ -53,8 +53,9 @@ public:
 
     void setCategory(const std::string &category);
 
-    void setLoaned(bool loaned);  // Nuevo método para cambiar el estado de préstamo
-    bool isLoaned() const;        // Nuevo método para verificar si el libro está prestado
+    void setLoaned(bool loaned);
+
+    bool isLoaned() const;
 
     // Implementación de lista doble enlazada
 

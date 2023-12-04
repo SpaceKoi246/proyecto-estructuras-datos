@@ -38,21 +38,6 @@ void loanBook();
 void returnBook();
 
 int main() {
-    userList.addUser(User("Alice", "Smith", "123 Main St", "alice@example.com", "01/01/1990", "Femenino", "001"));
-    userList.addUser(User("Bob", "Johnson", "456 Elm St", "bob@example.com", "02/02/1991", "Masculino", "002"));
-    bookList.addBook(
-            Book("El Señor de los Anillos", 1954, "George Allen & Unwin", "J.R.R. Tolkien", "9780544003415", "Fantasía",
-                 "Inglés", true));
-    bookList.addBook(
-            Book("Cien Años de Soledad", 1967, "Editorial Sudamericana", "Gabriel García Márquez", "9780307474728",
-                 "Realismo mágico", "Español", true));
-    bookList.addBook(
-            Book("1984", 1949, "Secker & Warburg", "George Orwell", "9780451524935", "Distopía", "Inglés", true));
-    bookList.addBook(Book("To Kill a Mockingbird", 1960, "J.B. Lippincott & Co.", "Harper Lee", "9780061120084",
-                          "Ficción histórica", "Inglés", true));
-    bookList.addBook(
-            Book("Don Quijote de la Mancha", 1605, "Francisco de Robles", "Miguel de Cervantes", "9788423349647",
-                 "Novela", "Español", true));
     menu();
 }
 
@@ -235,7 +220,7 @@ void loanBook() {
 
     if (book != nullptr && user != nullptr) {
         if (!book->isLoaned()) {
-            book->setLoaned(true); // Actualiza el estado del libro a prestado
+            book->setLoaned(true);
             Loan loan(*book, *user, loanDate, returnDate);
             loanTree.addLoan(loan);
             std::cout << "Préstamo realizado con éxito." << std::endl;
@@ -253,9 +238,15 @@ void returnBook() {
     cin >> isbn;
 
     Loan loan = loanTree.findLoanByISBN(isbn);
-    if (loan.getBook().getISBN() != "") { // Asumiendo que un ISBN vacío indica que no se encontró el préstamo
-        loanTree.removeLoan(isbn);
-        cout << "Libro devuelto con éxito." << endl;
+    if (loan.getBook().getISBN() != "") {
+        Book* book = bookList.findBookByISBN(isbn);
+        if (book != nullptr) {
+            book->setLoaned(false);
+            loanTree.removeLoan(isbn);
+            cout << "Libro devuelto con éxito." << endl;
+        } else {
+            cout << "Libro no encontrado." << endl;
+        }
     } else {
         cout << "Préstamo no encontrado." << endl;
     }
